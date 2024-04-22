@@ -1,5 +1,4 @@
-class CheckingAccount
-{
+class CheckingAccount {
     private int balance;
 
     public CheckingAccount(int initialBalance)
@@ -7,7 +6,7 @@ class CheckingAccount
         balance = initialBalance;
     }
 
-    public int withdraw(int amount)
+    synchronized public int withdraw(int amount)
     {
         if (amount <= balance)
         {
@@ -21,6 +20,10 @@ class CheckingAccount
         }
         return balance;
     }
+
+    int getBalance() {
+        return balance;
+    }
 }
 
 public class Main {
@@ -32,8 +35,12 @@ public class Main {
             public void run() {
                 String name = Thread.currentThread().getName();
                 for (int i = 0; i < 10; i++) {
-                    System.out.println(name + " tries to withdraw $10, balance: " +
+
+                    if(!(account.getBalance() == 0)) {
+                        System.out.println(name + " tries to withdraw $10, balance: " +
                             account.withdraw(10));
+
+                    }
                 }
             }
         };
